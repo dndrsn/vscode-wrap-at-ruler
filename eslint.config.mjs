@@ -1,3 +1,4 @@
+
 import globals from "globals";
 
 export default [{
@@ -23,3 +24,4 @@ export default [{
         "valid-typeof": "warn",
     },
 }];
+
