@@ -7,30 +7,46 @@
     "vscode": "^1.98.0"
   },
   "categories": [
-    "Other"
+    "Formatters"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onCommand:extension.wrapAtRuler"
+  ],
   "main": "./extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "wrap-at-ruler.helloWorld",
-        "title": "Hello World"
+        "command": "extension.wrapAtRuler",
+        "title": "Wrap Text at Ruler"
       }
-    ]
+    ],
+    "keybindings": [
+      {
+        "command": "extension.wrapAtRuler",
+        "key": "shift+ctrl+w",
+        "when": "editorTextFocus && editorHasSelection"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "when": "editorHasSelection",
+          "command": "extension.wrapAtRuler",
+          "group": "1_modification"
+        }
+      ]
+    }
   },
   "scripts": {
+    "vscode:prepublish": "npm run lint",
     "lint": "eslint .",
-    "pretest": "pnpm run lint",
-    "test": "vscode-test"
+    "test": "node ./test/runTest.js"
   },
   "devDependencies": {
-    "@types/vscode": "^1.98.0",
-    "@types/mocha": "^10.0.10",
-    "@types/node": "20.x",
-    "eslint": "^9.21.0",
-    "@vscode/test-cli": "^0.0.10",
-    "@vscode/test-electron": "^2.4.1"
+    "@types/vscode": "^1.60.0",
+    "eslint": "^8.27.0",
+    "glob": "^8.0.3",
+    "vscode-test": "^1.6.1"
   },
-  "packageManager": "pnpm@10.6.5+sha512.cdf928fca20832cd59ec53826492b7dc25dc524d4370b6b4adbf65803d32efaa6c1c88147c0ae4e8d579a6c9eec715757b50d4fa35eea179d868eada4ed043af"
+  "packageManager": "pnpm@10.6.5"
 }

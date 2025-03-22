@@ -1,36 +1,133 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
+
 const vscode = require('vscode');
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
 
 /**
+ * Activates the extension
  * @param {vscode.ExtensionContext} context
  */
-function activate(context) {
+const activate = (context) => {
+  // Register the command
+  const disposable = vscode.commands.registerCommand(
+    'extension.wrapAtRuler',
+    wrapSelectedTextAtRuler
+  );
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "wrap-at-ruler" is now active!');
+  context.subscriptions.push(disposable);
+};
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with  registerCommand
-	// The commandId parameter must match the command field in package.json
-	const disposable = vscode.commands.registerCommand('wrap-at-ruler.helloWorld', function () {
-		// The code you place here will be executed every time your command is executed
 
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from Wrap At Ruler!');
-	});
+/**
+ * Wraps selected text at the first ruler position
+ */
+const wrapSelectedTextAtRuler = () => {
+  const editor = vscode.window.activeTextEditor;
+  if (!editor) {
+    vscode.window.showInformationMessage('No editor is active');
+    return;
+  }
 
-	context.subscriptions.push(disposable);
-}
+  const selection = editor.selection;
+  if (selection.isEmpty) {
+    vscode.window.showInformationMessage('No text selected');
+    return;
+  }
 
-// This method is called when your extension is deactivated
-function deactivate() {}
+  // Get the selected text
+  const document = editor.document;
+  const text = document.getText(selection);
+
+  // Get the first ruler position from settings
+  const config = vscode.workspace.getConfiguration('editor');
+  const rulers = config.get('rulers');
+
+  // Default to 80 if no rulers are defined
+  const rulerPosition = Array.isArray(rulers) && rulers.length > 0 ? rulers[0] : 80;
+
+  // Get the start line and its indentation
+  const startLine = document.lineAt(selection.start.line);
+  const indentMatch = startLine.text.match(/^\s*/);
+  const indentation = indentMatch ? indentMatch[0] : '';
+
+  // Calculate effective ruler position (accounting for indentation)
+  const effectiveRulerPosition = rulerPosition - indentation.length;
+
+  // Wrap the text
+  const wrappedText = wrapText(text, effectiveRulerPosition, indentation);
+
+  // Replace the selected text with the wrapped text
+  editor.edit(editBuilder => {
+    editBuilder.replace(selection, wrappedText);
+  });
+};
+
+
+/**
+ * Wraps text at the specified position while maintaining indentation
+ * @param {string} text - The text to wrap
+ * @param {number} wrapPosition - The position to wrap at (not counting indentation)
+ * @param {string} indentation - The indentation to use for each line
+ * @returns {string} - The wrapped text
+ */
+const wrapText = (text, wrapPosition, indentation) => {
+  // Split the text into words
+  const words = text.trim().split(/\s+/);
+
+  const lines = [];
+  let currentLine = '';
+
+  for (const word of words) {
+    // Check if adding this word would exceed the wrap position
+    if (currentLine.length + word.length + 1 > wrapPosition) {
+      // If current line is not empty, add it to lines
+      if (currentLine.length > 0) {
+        lines.push(currentLine);
+        currentLine = '';
+      }
+
+      // Handle words that are longer than the wrap position
+      if (word.length > wrapPosition) {
+        // Split the long word
+        let remainingWord = word;
+        while (remainingWord.length > wrapPosition) {
+          lines.push(remainingWord.substring(0, wrapPosition));
+          remainingWord = remainingWord.substring(wrapPosition);
+        }
+
+        if (remainingWord.length > 0) {
+          currentLine = remainingWord;
+        }
+      } else {
+        currentLine = word;
+      }
+    } else {
+      // Add the word to the current line
+      if (currentLine.length > 0) {
+        currentLine += ' ' + word;
+      } else {
+        currentLine = word;
+      }
+    }
+  }
+
+  // Add the last line if it's not empty
+  if (currentLine.length > 0) {
+    lines.push(currentLine);
+  }
+
+  // Join the lines with the proper indentation
+  return lines.map(line => indentation + line).join('\n');
+};
+
+
+/**
+ * Deactivates the extension
+ */
+const deactivate = () => {};
+
 
 module.exports = {
-	activate,
-	deactivate
-}
+  activate,
+  deactivate
+};
+
