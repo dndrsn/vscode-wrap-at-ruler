@@ -43,19 +43,23 @@ const wrapSelectedTextAtRuler = () => {
   }
 
   // Get the first ruler position from settings
-  const config = vscode.workspace.getConfiguration('editor');
-  const rulers = config.get('rulers');
+  const editorConfig = vscode.workspace.getConfiguration('editor');
+  const rulers = editorConfig.get('rulers');
 
   // Default to 80 if no rulers are defined
   const rulerPosition = Array.isArray(rulers) && rulers.length > 0 ? rulers[0] : 80;
+
+  // Get the character buffer from settings
+  const extensionConfig = vscode.workspace.getConfiguration('textRulerWrap');
+  const characterBuffer = extensionConfig.get('characterBuffer');
 
   // Get the start line and its indentation
   const startLine = document.lineAt(selection.start.line);
   const indentMatch = startLine.text.match(/^\s*/);
   const indentation = indentMatch ? indentMatch[0] : '';
 
-  // Calculate effective ruler position (accounting for indentation)
-  const effectiveRulerPosition = rulerPosition - indentation.length;
+  // Calculate effective ruler position (accounting for indentation and buffer)
+  const effectiveRulerPosition = rulerPosition - indentation.length - characterBuffer;
 
   // Wrap the text
   const wrappedText = wrapText(text, effectiveRulerPosition, indentation);

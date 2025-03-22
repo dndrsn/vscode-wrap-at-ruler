@@ -35,6 +35,17 @@
           "group": "1_modification"
         }
       ]
+    },
+    "configuration": {
+      "title": "Wrap At Ruler",
+      "properties": {
+        "textRulerWrap.characterBuffer": {
+          "type": "number",
+          "default": 5,
+          "minimum": 0,
+          "description": "Number of characters before ruler to wrap"
+        }
+      }
     }
   },
   "scripts": {
@@ -45,7 +56,9 @@
   "devDependencies": {
     "@types/vscode": "^1.60.0",
     "eslint": "^8.27.0",
+    "eslint-plugin-n": "^17.16.2",
     "glob": "^8.0.3",
+    "globals": "^16.0.0",
     "vscode-test": "^1.6.1"
   },
   "packageManager": "pnpm@10.6.5"
