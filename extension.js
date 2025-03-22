@@ -27,15 +27,20 @@ const wrapSelectedTextAtRuler = () => {
     return;
   }
 
-  const selection = editor.selection;
-  if (selection.isEmpty) {
-    vscode.window.showInformationMessage('No text selected');
-    return;
-  }
-
-  // Get the selected text
   const document = editor.document;
-  const text = document.getText(selection);
+  let selection = editor.selection;
+  let text;
+
+  // If no text is selected, use the current line
+  if (selection.isEmpty) {
+    const currentLine = editor.selection.active.line;
+    const lineRange = document.lineAt(currentLine).range;
+    selection = new vscode.Selection(lineRange.start, lineRange.end);
+    text = document.getText(lineRange);
+  } else {
+    // Get the selected text
+    text = document.getText(selection);
+  }
 
   // Get the first ruler position from settings
   const config = vscode.workspace.getConfiguration('editor');

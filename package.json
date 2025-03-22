@@ -24,13 +24,13 @@
       {
         "command": "extension.wrapAtRuler",
         "key": "shift+ctrl+w",
-        "when": "editorTextFocus && editorHasSelection"
+        "when": "editorTextFocus"
       }
     ],
     "menus": {
       "editor/context": [
         {
-          "when": "editorHasSelection",
+          "when": "editorTextFocus",
           "command": "extension.wrapAtRuler",
           "group": "1_modification"
         }
