@@ -1,6 +1,6 @@
 {
   "name": "wrap-at-ruler",
-  "displayName": "Wrap At Ruler",
+  "displayName": "Wrap at Ruler",
   "description": "Wraps selected text at the ruler",
   "version": "0.0.1",
   "engines": {
@@ -27,19 +27,10 @@
         "when": "editorTextFocus"
       }
     ],
-    "menus": {
-      "editor/context": [
-        {
-          "when": "editorTextFocus",
-          "command": "extension.wrapAtRuler",
-          "group": "1_modification"
-        }
-      ]
-    },
     "configuration": {
-      "title": "Wrap At Ruler",
+      "title": "Wrap at Ruler",
       "properties": {
-        "textRulerWrap.characterBuffer": {
+        "wrapAtRuler.characterBuffer": {
           "type": "number",
           "default": 5,
           "minimum": 0,

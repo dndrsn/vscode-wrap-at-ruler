@@ -50,7 +50,7 @@ const wrapSelectedTextAtRuler = () => {
   const rulerPosition = Array.isArray(rulers) && rulers.length > 0 ? rulers[0] : 80;
 
   // Get the character buffer from settings
-  const extensionConfig = vscode.workspace.getConfiguration('textRulerWrap');
+  const extensionConfig = vscode.workspace.getConfiguration('wrapAtRuler');
   const characterBuffer = extensionConfig.get('characterBuffer');
 
   // Get the start line and its indentation

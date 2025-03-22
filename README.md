@@ -1,65 +1,46 @@
-# wrap-at-ruler README
+# Text Ruler Wrap
 
-This is the README for your extension "wrap-at-ruler". After writing up a brief description, we recommend including the following sections.
+A simple VS Code extension that wraps text at the editor ruler.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+- Wraps selected text at the position of the first editor ruler
+- Maintains indentation for all wrapped lines
+- Provides a configurable buffer to wrap text before reaching the ruler
+- Wraps the current line if no text is selected
 
-For example if there is an image subfolder under your extension project workspace:
+## Usage
 
-\!\[feature X\]\(images/feature-x.png\)
+1. Select text to wrap (or place cursor on a line to wrap just that line)
+2. Use the command palette (`Ctrl+Shift+P` or `Cmd+Shift+P`) and search for "Wrap Text at Ruler"
+3. Alternatively, use the keyboard shortcut: `Shift+Ctrl+W`
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
-
-## Requirements
-
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
 
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
 This extension contributes the following settings:
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+* `wrapAtRuler.characterBuffer`: Number of characters to wrap before reaching the ruler position (default: 5)
 
-## Known Issues
+## Requirements
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+- VS Code version 1.60.0 or higher
+- At least one editor ruler defined in your settings (defaults to 80 if none defined)
+
+To set rulers in VS Code:
+1. Open Settings (`Ctrl+,` or `Cmd+,`)
+2. Search for "editor.rulers"
+3. Add ruler values as needed (e.g., `[80, 100]`)
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
+### 0.1.0
 
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
+Initial release of Text Ruler Wrap:
+- Wrap text at editor ruler position
+- Keyboard shortcut support
+- Configurable character buffer
 
 ---
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
 
 **Enjoy!**
