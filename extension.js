@@ -38,6 +38,27 @@ const wrapSelectedTextAtRuler = () => {
     selection = new vscode.Selection(lineRange.start, lineRange.end);
     text = document.getText(lineRange);
   } else {
+    // If selection ends at character 0 of the last line (no text selected on that line)
+    // and it's not a single-line selection, exclude the last line
+    if (selection.end.character === 0 && selection.start.line !== selection.end.line) {
+      // Create a new selection that ends at the last character of the previous line
+      const previousLine = document.lineAt(selection.end.line - 1);
+      selection = new vscode.Selection(
+        selection.start,
+        previousLine.range.end
+      );
+    }
+    
+    // Get the full text of all selected lines
+    const startLine = document.lineAt(selection.start.line);
+    const endLine = document.lineAt(selection.end.line);
+    
+    // Create a selection that covers the entire lines
+    selection = new vscode.Selection(
+      startLine.range.start,
+      endLine.range.end
+    );
+    
     // Get the selected text
     text = document.getText(selection);
   }
