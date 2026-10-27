@@ -9,9 +9,6 @@
   "engines": {
     "vscode": "^1.98.0"
   },
-  "categories": [
-    "Formatters"
-  ],
   "main": "./extension.js",
   "contributes": {
     "commands": [
